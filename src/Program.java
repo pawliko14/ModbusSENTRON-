@@ -2,7 +2,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
@@ -24,7 +23,9 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
@@ -35,31 +36,20 @@ import de.re.easymodbus.exceptions.ModbusException;
 import de.re.easymodbus.modbusclient.*;
 import de.re.easymodbus.modbusclient.ModbusClient.RegisterOrder;
 
-/*
- ZALOZENIA
- - PROGRAM MA CZYTAC Z MODBUSA CIAGLE, KWESTIA DOGADANIA
- CZY 
- PROGRAM MA SYPAC DO PLIKU TEKSTOWEGO I POTEM Z NIEGO WKLEC DO BAZY DANYCH I POTEM
- WYKRESY
- CZY 
- PROGRAM CHODZI CIAGLE CZYTA DO ARRAYA I NA KONIEC DNIA WALI DO PLIKU TEKSTOWEGO I 
- GENERUJE WYKRES
- 
- NA TA CHWILE CZYTA ILES TAM WARTOSCI BEZ ZAPISU DO PLIKU I Z TEGO GENERUJE WYKRES
-  ---------- WYKRES NIE JEST W TRYBIE AUTOSCALINGU -------------
-  
- */
 
-public class run extends JFrame {
 
-	
-	static private int LICZBA_POMIAROW = 40;    // 
-	static private int CZESTOTLIWOSC = 300;// 30000 = 30sek , przy 50000 powinien sie pojawic timeout
-	static private int register = 801;
+public class Program extends JFrame {
+
+
+	static private int LICZBA_POMIAROW = 50;    // 
+	static private int CZESTOTLIWOSC = 30000;// 30000 = 30sek , przy 50000 powinien sie pojawic timeout
+	static private int register = 25;
+	static private int Offset = 2;   // 2 for 65 regiester, 4 for 801 register
 	static boolean Show = false;					// pokazuje na ekranie 200 pierwszych rejestrow
 	static String Connection_ip = "192.168.90.145";
 	static String Directory = "C://Users/el08/Desktop/charts/";
 	
+	public static double CurrentValue = 0;
 	static private String start_time= "";
 	static private String end_time = "";
 	static private String Measurment_day = "";
@@ -72,8 +62,10 @@ public class run extends JFrame {
 	static String[] dates = new String[LICZBA_POMIAROW];	
 	
 	
-    public run() throws IOException {
+    public Program() throws IOException {
 
+    	
+    	
         initUI();
     }
 
@@ -89,7 +81,7 @@ public class run extends JFrame {
         pack();
         setTitle("Line chart");
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       // setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private static XYDataset createDataset() {
@@ -123,8 +115,8 @@ public class run extends JFrame {
         XYPlot plot = chart.getXYPlot();
         // CHANGE Y-AXIS LIMITS
         NumberAxis rangeAxis = (NumberAxis)plot.getRangeAxis();
-        rangeAxis.setRange(1086965,1087200);
-        //rangeAxis.setAutoRange(true);
+        rangeAxis.setAutoRange(true);
+        rangeAxis.centerRange(kWh_table[0]); // center curve around first measured value
         
         NumberAxis domainAxis = new NumberAxis("X-Axis");
         domainAxis = (NumberAxis) plot.getDomainAxis();
@@ -151,7 +143,7 @@ public class run extends JFrame {
         );
 
       //Save chart as PNG 1st goes to project directory, 2nd to the desktop charts directory
-        ChartUtilities.saveChartAsPNG(new File(Directory + "ConsumptionChart" +FileName +".png"), chart, 800, 600);
+       // ChartUtilities.saveChartAsPNG(new File(Directory + "ConsumptionChart" +FileName +".png"), chart, 800, 600);
         
       //  exportAsPNG(chart);
         
@@ -181,11 +173,19 @@ public class run extends JFrame {
 					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 					Date date = new Date();
 					
-					Wh_1 = ModbusClient.ConvertRegistersToDouble(modbusClient.ReadHoldingRegisters(register, 4),RegisterOrder.HighLow);
-								
+					// first double register, 2nd float
+					Wh_1 = ModbusClient.ConvertRegistersToDouble(modbusClient.ReadHoldingRegisters(register, Offset),RegisterOrder.HighLow);
+					Wh_1 = ModbusClient.ConvertRegistersToFloat(modbusClient.ReadHoldingRegisters(register, Offset),RegisterOrder.HighLow);
+
 					// przeliczenie na kWh
 					//1 Watogodzina [Wh] = 0,001 Kilowatogodzina [kWh]
+					
 					double kWh_1 = 0.001 * Wh_1;
+					
+					CurrentValue = kWh_1;
+					FinalClass.Value_1.setText(String.valueOf(Program.CurrentValue));
+
+	
 					
 					dates[z] = dateFormat.format(date);
 					kWh_table[z] = kWh_1;
@@ -261,28 +261,45 @@ public class run extends JFrame {
         ImageIO.write( chartImage, "png", f ); 
         System.out.println("Chart created");
     }
-
-    public static void main(String[] args) {
-
-    	Thread[] threads = new Thread[2];
-    	TimerCounter[] timers = new TimerCounter[2];
-    	
-    	
-    	GenerateDataSet();
-    	
-        SwingUtilities.invokeLater(() -> {
-            run ex = null;
-			try {
-				ex = new run();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            ex.setVisible(true);
-        });
+    
+    public static void SaveDataInTxt() throws FileNotFoundException 
+    {
+    	String nazwa = "testChangeLater";
+        File f = new File("C://Users/el08/Desktop/charts/CollectedData" + nazwa + ".txt");
         
+       // dates[i] + "  kWh: "+ kWh_table[i]);
+        
+        try (PrintWriter out = new PrintWriter(f)) {
+        	for(int i = 0 ;i < kWh_table.length;i++)
+        		  out.println(dates[i] + ";"+ kWh_table[i]);
+        }
+          
 
     }
+    
+    public static void run() throws IOException 
+    {
+    	
+    	Thread thread = Thread.currentThread();
+		System.out.println("RunnableJob is being run by " + thread.getName() + " (" + thread.getId() + ")");
+    	
+    	GenerateDataSet();
+   	  	
+    	 Program ex = new Program();
+    	 ex.setVisible(true);
+
+        
+        try {
+			SaveDataInTxt();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 }
+  
+
 
 

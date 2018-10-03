@@ -1,23 +1,55 @@
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
-public class TimerCounter implements Runnable {
-	private int id;
+// File Name : DisplayMessage.java
+// Create a thread to implement Runnable
 
-	public TimerCounter(int id) {
-		this.id = id;
-	}
+public class TimerCounter extends Thread {
+   public boolean suspended = false;
+   public static Date dates;
+   public static String datesString;
+   
+   public TimerCounter() {
+   }
+   
+   public void run() {
+		Thread thread = Thread.currentThread();
+		System.out.println("RunnableJob is being run by " + thread.getName() + " (" + thread.getId() + ")");
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-	@Override
-	public void run() {
-		while(true) {
-			System.out.println("Watek "+id);
-			try {
-				//usypiamy w¹tek na 100 milisekund
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+      while(true) {
+    		Date date = new Date();
+    		String dates = dateFormat.format(date);	
+    		System.out.println(dates);
+			FinalClass.Value_2.setText(dates);
+
+         
+         try {
+			Thread.sleep(1000);
+			synchronized(this){
+				while(suspended) {
+					wait();
+				}
 			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	}
-
-
+      }
+   }
+   
+   public void suspendThread()
+   {
+	   suspended = true;
+   }
+   
+   public void resumeThread()
+   {
+	   suspended = false;
+	   synchronized(this) {
+		   notify();
+	   }
+   }
 }
