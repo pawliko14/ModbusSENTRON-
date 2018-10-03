@@ -37,6 +37,9 @@ import de.re.easymodbus.modbusclient.*;
 import de.re.easymodbus.modbusclient.ModbusClient.RegisterOrder;
 
 
+/*
+ write down here some explainations etc.. 
+ */
 
 public class Program extends JFrame {
 
