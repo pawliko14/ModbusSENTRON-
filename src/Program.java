@@ -28,8 +28,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 
 import de.re.easymodbus.exceptions.ModbusException;
@@ -38,14 +46,16 @@ import de.re.easymodbus.modbusclient.ModbusClient.RegisterOrder;
 
 
 /*
- write down here some explainations etc.. 
+sprawdzic czy po reconnection wciaz jaki bedzie stan licznika,
+zaimplementowac globalny licznik pomiarow niezalezny od stanu po rozlaczeniu,
+czyli liczy liczy np 10, myk rozlaczylo i polaczylo, ma byc potem 11 12 pomiarow itp...
  */
 
 public class Program extends JFrame {
 
-
-	static private int LICZBA_POMIAROW = 50;    // 
-	static private int CZESTOTLIWOSC = 30000;// 30000 = 30sek , przy 50000 powinien sie pojawic timeout
+	static Connection connection=null;
+	static public int LICZBA_POMIAROW = 9;    //  450, czyli 15h pracy z pomiarem co 2 minuty
+	static public int CZESTOTLIWOSC = 100*2;// 60000 * 2 -> co 2 minuty pomiar
 	static private int register = 25;
 	static private int Offset = 2;   // 2 for 65 regiester, 4 for 801 register
 	static boolean Show = false;					// pokazuje na ekranie 200 pierwszych rejestrow
@@ -56,6 +66,7 @@ public class Program extends JFrame {
 	static private String start_time= "";
 	static private String end_time = "";
 	static private String Measurment_day = "";
+	static public int z =0;
 	
 	static private String FileName = " test";
 	
@@ -66,8 +77,6 @@ public class Program extends JFrame {
 	
 	
     public Program() throws IOException {
-
-    	
     	
         initUI();
     }
@@ -154,7 +163,7 @@ public class Program extends JFrame {
 
     }
     
-    private static void GenerateDataSet()
+    private static void GenerateDataSet() throws UnknownHostException, IOException, InterruptedException
     {
     	ModbusClient modbusClient = new ModbusClient(Connection_ip,502);
 		try
@@ -164,7 +173,6 @@ public class Program extends JFrame {
 			if(modbusClient.isConnected())
 			{
 				System.out.println("Connection is set");
-				int z =0;
 				double Wh_1;
 	
 				if(Show == true ) 
@@ -172,7 +180,7 @@ public class Program extends JFrame {
 					
 				while(z< LICZBA_POMIAROW)
 				{
-					
+					System.out.println("pomiar:" + z);
 					DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 					Date date = new Date();
 					
@@ -188,8 +196,7 @@ public class Program extends JFrame {
 					CurrentValue = kWh_1;
 					FinalClass.Value_1.setText(String.valueOf(Program.CurrentValue));
 
-	
-					
+
 					dates[z] = dateFormat.format(date);
 					kWh_table[z] = kWh_1;
 					
@@ -198,7 +205,7 @@ public class Program extends JFrame {
 					Measurment_day = "3";
 					
 					Thread.sleep(CZESTOTLIWOSC);
-					
+					FinalClass.Count.setText(Integer.toString(z));
 					z++;
 				}
 				start_time= dates[0].substring(11, 19); // 2018
@@ -207,7 +214,7 @@ public class Program extends JFrame {
 	
 				FileName = Measurment_day.substring(0,3);
 				
-				z = 0;
+				//z = 0; // <- sprawdzic pozniej czy nie spowoduje crashu
 				
 				
 					for ( int i = 0 ;i < LICZBA_POMIAROW ;i++ )
@@ -215,23 +222,14 @@ public class Program extends JFrame {
 				
 
 			}
-			else
-			{
-				System.out.println("Connection lost, trying to connect:");
-				int timer = 0;
-				while(!modbusClient.isConnected())
-				{
-				System.out.println("try nr: "+ timer);
-				modbusClient.Connect();
-				Thread.sleep(2000);
-				}
-				
-			}
 
 		}
 		catch (Exception e)
 		{		
-	        System.out.println(e.toString());
+			System.out.println("Connection lost, trying to connect:");      
+			System.out.println(e.toString());
+			//recurse run a program again, without losing collected data
+			GenerateDataSet(); 
 
 		}	
     }
@@ -267,8 +265,8 @@ public class Program extends JFrame {
     
     public static void SaveDataInTxt() throws FileNotFoundException 
     {
-    	String nazwa = "testChangeLater";
-        File f = new File("C://Users/el08/Desktop/charts/CollectedData" + nazwa + ".txt");
+
+        File f = new File("C://Users/el08/Desktop/charts/CollectedData" + GetCUrrentDataTime() + ".txt");
         
        // dates[i] + "  kWh: "+ kWh_table[i]);
         
@@ -280,26 +278,99 @@ public class Program extends JFrame {
 
     }
     
-    public static void run() throws IOException 
+    public static String GetCUrrentDataTime()
+    {
+    		String datka;
+            LocalDate localDate = LocalDate.now();            
+            return datka = DateTimeFormatter.ofPattern("yyy-MM-dd").format(localDate);
+    }
+    
+    public static void run() throws IOException, InterruptedException, SQLException 
     {
     	
     	Thread thread = Thread.currentThread();
 		System.out.println("RunnableJob is being run by " + thread.getName() + " (" + thread.getId() + ")");
-    	
+		
     	GenerateDataSet();
    	  	
     	 Program ex = new Program();
     	 ex.setVisible(true);
 
-        
         try {
 			SaveDataInTxt();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        
+        SendtoDatabase();
+        
+        System.out.println("proba wyslania do bazy danych");
+        PushIntoDatabase();
+        
+        
+  // 	 System.exit(1) ;
+        // end program after genereting dataset and save them into file
+        // recently was accept by button, after all it has to be run without buttons
 
 	}
+    
+    public static void SendtoDatabase()
+    {
+		connection = RCPdatabaseConnection.dbConnector("tosia", "1234","machines"); // test , fatdb
+
+		String query = null;
+		String ID;
+		String Date;
+		String Time;
+		String Power;
+		
+		try {
+
+			query = "select * from machines.bn25_pr2 order by ID";
+			PreparedStatement pst=connection.prepareStatement(query);
+			ResultSet rs=pst.executeQuery();
+			
+				while(rs.next())
+				{
+					ID = rs.getString("ID");
+					Date = rs.getString("Date");
+					Time = rs.getString("Time");
+					Power = rs.getString("PowerConsumption");
+
+					System.out.println(" Id: " + ID + " Date: " + Date + " Time: " + Time + " Power: " + Power );
+					
+				}	
+			pst.close();			
+			rs.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
+
+    }
+    public static void PushIntoDatabase() throws SQLException
+    {
+		connection = RCPdatabaseConnection.dbConnector("tosia", "1234","machines"); // test , fatdb
+		String query = "0";
+		String  date = "2018-11-11";
+		String Time = "10:10:10";
+		String PowerConsumption = "4";
+		
+		
+		query = "INSERT INTO bn25_pr2 (Date, Time, PowerConsumption)\r\n" + 
+				"VALUES ('"+date+"', '"+Time+"', '"+PowerConsumption+"')";
+
+		PreparedStatement pst=connection.prepareStatement(query);
+		ResultSet rs=pst.executeQuery();
+		
+		pst.close();			
+		rs.close();
+		
+		
+    }
+    
 
 }
   

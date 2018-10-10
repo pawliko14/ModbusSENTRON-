@@ -14,5 +14,67 @@
 	<classpathentry exported="true" kind="lib" path="C:/Users/el08/Desktop/biblioteki/jfreechart-1.0.19/lib/orsonpdf-1.6-eval.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/el08/Desktop/biblioteki/jfreechart-1.0.19/lib/servlet.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/el08/Desktop/biblioteki/jfreechart-1.0.19/lib/swtgraphics2d.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/birt-2.3.2-modelapi.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/commons-logging-1.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/forms-1.3.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/hsqldb.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/itext7-barcodes-7.0.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/itext7-font-asian-7.0.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/itext7-forms-7.0.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/itext7-hyph-7.0.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/itext7-io-7.0.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/itext7-kernel-7.0.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/itext7-layout-7.0.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/itext7-pdfa-7.0.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/itext7-pdftest-7.0.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/itext7-sign-7.0.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/itextpdf-5.4.1.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/jackcess-2.1.6.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/jackcess-encrypt-2.1.1.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/jfilechooser-bookmarks-0.1.6.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/jfreechart-1.0.19-experimental.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/jfreechart-1.0.19-swt.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/jfreesvg-2.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/jgoodies-common-1.2.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/jgoodies-looks-2.4.1.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/junit-4.6.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/junit-4.11.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/k5nCal-0.9.7.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/k5n-calendarpanel-0.4.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/k5n-ical-0.4.6.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/mariadb-java-client-1.1.7-javadoc.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/mariadb-java-client-1.1.8.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/mariadb-java-client-2.1.2.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/miglayout15-swing.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/org.eclipse.birt.core_3.7.1.v20110905.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/orsoncharts-1.4-eval-nofx.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/orsonpdf-1.6-eval.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/rs2xml.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/servlet.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.7.2.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.7.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.7.15-M1.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.7.15-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.7.15-SNAPSHOT-2.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.7.15-SNAPSHOT-javadoc.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.8.5-pre1.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.8.6.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.8.7.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.8.10.1.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.8.10.2.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.8.11.1.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.8.11.2.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.8.11.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc-3.18.0.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqlite-jdbc4-3.8.2-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/sqltool.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/swing-bits-1.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/swtgraphics2d.jar"/>
+	<classpathentry kind="lib" path="W:/Tosia/Projekty JAVA/biblioteki/ucanaccess-4.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

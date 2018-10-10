@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -34,6 +35,8 @@ public class FinalClass {
 	 
 	 private JTextField frequency;
 	 private JTextField quantity;
+	 private JTextField Counter;
+	 static JTextField Count;
 
 	public static void general()
 	{
@@ -53,7 +56,7 @@ public class FinalClass {
 	    
 	}
 	
-	public void run()
+	public void run() throws InterruptedException, SQLException
 	{
 		try {
 			Program.run();
@@ -272,7 +275,7 @@ public class FinalClass {
 		txtFreq = new JTextField();
 		txtFreq.setEditable(false);
 		txtFreq.setText("frequency");
-		txtFreq.setBounds(24, 67, 57, 20);
+		txtFreq.setBounds(10, 67, 57, 20);
 		frame.getContentPane().add(txtFreq);
 		txtFreq.setColumns(10);
 		
@@ -280,23 +283,40 @@ public class FinalClass {
 		txtQuantity.setEditable(false);
 		txtQuantity.setText("quantity");
 		txtQuantity.setColumns(10);
-		txtQuantity.setBounds(100, 67, 57, 20);
+		txtQuantity.setBounds(77, 67, 49, 20);
 		frame.getContentPane().add(txtQuantity);
 		
 		frequency = new JTextField();
+		frequency.setEditable(false);
 		
-		frequency.setText("0");
+		frequency.setText(Integer.toString(Program.CZESTOTLIWOSC));
 		
-		frequency.setBounds(24, 98, 57, 20);
+		frequency.setBounds(10, 98, 57, 20);
 		frame.getContentPane().add(frequency);
 		frequency.setColumns(10);
 		
 		quantity = new JTextField();
+		quantity.setEditable(false);
 		
-		quantity.setText("0");
+		quantity.setText(Integer.toString(Program.LICZBA_POMIAROW));
 		
 		quantity.setColumns(10);
-		quantity.setBounds(100, 98, 57, 20);
+		quantity.setBounds(80, 98, 46, 20);
 		frame.getContentPane().add(quantity);
+		
+		Counter = new JTextField();
+		Counter.setText("Count");
+		Counter.setEditable(false);
+		Counter.setBounds(136, 67, 37, 20);
+		frame.getContentPane().add(Counter);
+		Counter.setColumns(10);
+		
+		Count = new JTextField();
+		Count.setText(Integer.toString(Program.z));
+
+		Count.setEditable(false);
+		Count.setBounds(136, 98, 30, 20);
+		frame.getContentPane().add(Count);
+		Count.setColumns(10);
 	}
 }
