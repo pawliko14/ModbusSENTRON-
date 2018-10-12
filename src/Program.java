@@ -55,8 +55,8 @@ czyli liczy liczy np 10, myk rozlaczylo i polaczylo, ma byc potem 11 12 pomiarow
 public class Program extends JFrame {
 
 	static Connection connection=null;
-	static public int LICZBA_POMIAROW =10;    //  450, czyli 15h pracy z pomiarem co 2 minuty
-	static public int CZESTOTLIWOSC = 60000*1;// 60000 * 2 -> co 2 minuty pomiar
+	static public int LICZBA_POMIAROW =30;    //  450, czyli 15h pracy z pomiarem co 2 minuty
+	static public int CZESTOTLIWOSC = 6000*1;// 60000 * 2 -> co 2 minuty pomiar
 	static private int register = 25;
 	static private int Offset = 2;   // 2 for 65 regiester, 4 for 801 register
 	static boolean Show = false;					// pokazuje na ekranie 200 pierwszych rejestrow
@@ -69,9 +69,7 @@ public class Program extends JFrame {
 	static private String Measurment_day = "";
 	static public int z =0;
 	
-	static private String FileName = " test";
-	
-	
+
 	
 	static double[] kWh_table = new double[LICZBA_POMIAROW];
 	static String[] dates = new String[LICZBA_POMIAROW];	
@@ -153,13 +151,7 @@ public class Program extends JFrame {
         chart.setTitle(new TextTitle("Energy Consumption over Time",
                         new Font("Serif", java.awt.Font.BOLD, 18)
                 )
-        );
-
-      //Save chart as PNG 1st goes to project directory, 2nd to the desktop charts directory
-       // ChartUtilities.saveChartAsPNG(new File(Directory + "ConsumptionChart" +FileName +".png"), chart, 800, 600);
-        
-      //  exportAsPNG(chart);
-        
+        );     
         return chart;
 
     }
@@ -214,7 +206,6 @@ public class Program extends JFrame {
 				Measurment_day = dates[0].substring(0, 10); // first value
 				end_time = dates[z-1].substring(11, 19); // last value
 	
-				FileName = Measurment_day.substring(0,3);
 				
 				//z = 0; // <- sprawdzic pozniej czy nie spowoduje crashu
 				
@@ -358,34 +349,22 @@ public class Program extends JFrame {
     }
     public static void PushIntoDatabase() throws SQLException
     {
-		connection = RCPdatabaseConnection.dbConnector("tosia", "1234","machines"); // test , fatdb
+		connection = RCPdatabaseConnection.dbConnector("tosia", "1234","machines");
 		String query = "0";
-		String  date = "2018-11-11";
-		String Time = "10:10:10";
-		String PowerConsumption = "4";
-		
-		
-		//query = "INSERT INTO bn25_pr2 (Date, Time, PowerConsumption)\r\n" + 
-		//		"VALUES ('"+date+"', '"+Time+"', '"+PowerConsumption+"')";
 		String[] godzina = new String[dates.length];
 		String[] dzien = new String[dates.length];
 		String[] wartosc = new String[kWh_table.length];
-		
-		System.out.println("size1: " + dates.length + "size2 : "+ kWh_table.length);
-		
+			
 		for(int i = 0; i< kWh_table.length;i++)
 		{
 			dzien[i] = dates[i].substring(0, 11);
 			godzina[i] = dates[i].substring(11, 19);
 			wartosc[i] = String.valueOf(kWh_table[i]);
 		}
-		System.out.println("dzien"+ dzien[3] + "godzina" + godzina[3] + "wartosc: "+ wartosc[3]);
-		
-		query = "INSERT INTO bn25_pr2 (Date, Time, PowerConsumption)\r\n" + 
-				"VALUES (?,?,?)";
+
+		query = "INSERT INTO bn25_pr2 (Date, Time, PowerConsumption) VALUES (?,?,?)";
 
 		PreparedStatement pst=connection.prepareStatement(query);
-		//ResultSet rs=pst.executeQuery();
 		
 		for(int i = 0 ; i < dates.length-1 ;i++)
 		{
@@ -396,12 +375,8 @@ public class Program extends JFrame {
 		}
 		pst.executeBatch();
 		pst.close();			
-		//rs.close();
-		
-		
-    }
-    
 
+    }
 }
   
 

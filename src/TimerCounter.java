@@ -2,9 +2,6 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-// File Name : DisplayMessage.java
-// Create a thread to implement Runnable
-
 public class TimerCounter extends Thread {
    public boolean suspended = false;
    public static Date dates;
