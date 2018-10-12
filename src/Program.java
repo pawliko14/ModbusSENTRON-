@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -54,8 +55,8 @@ czyli liczy liczy np 10, myk rozlaczylo i polaczylo, ma byc potem 11 12 pomiarow
 public class Program extends JFrame {
 
 	static Connection connection=null;
-	static public int LICZBA_POMIAROW = 9;    //  450, czyli 15h pracy z pomiarem co 2 minuty
-	static public int CZESTOTLIWOSC = 100*2;// 60000 * 2 -> co 2 minuty pomiar
+	static public int LICZBA_POMIAROW =10;    //  450, czyli 15h pracy z pomiarem co 2 minuty
+	static public int CZESTOTLIWOSC = 60000*1;// 60000 * 2 -> co 2 minuty pomiar
 	static private int register = 25;
 	static private int Offset = 2;   // 2 for 65 regiester, 4 for 801 register
 	static boolean Show = false;					// pokazuje na ekranie 200 pierwszych rejestrow
@@ -208,6 +209,7 @@ public class Program extends JFrame {
 					FinalClass.Count.setText(Integer.toString(z));
 					z++;
 				}
+				
 				start_time= dates[0].substring(11, 19); // 2018
 				Measurment_day = dates[0].substring(0, 10); // first value
 				end_time = dates[z-1].substring(11, 19); // last value
@@ -303,9 +305,13 @@ public class Program extends JFrame {
 			e.printStackTrace();
 		}
         
-        SendtoDatabase();
+        SelectFromDatabase();
         
         System.out.println("proba wyslania do bazy danych");
+        
+        for(int i = 0; i < kWh_table.length;i++)
+        	System.out.println("kWh:"+ kWh_table[i] + "dates:" + dates[i] );
+   
         PushIntoDatabase();
         
         
@@ -315,7 +321,7 @@ public class Program extends JFrame {
 
 	}
     
-    public static void SendtoDatabase()
+    public static void SelectFromDatabase()
     {
 		connection = RCPdatabaseConnection.dbConnector("tosia", "1234","machines"); // test , fatdb
 
@@ -359,14 +365,38 @@ public class Program extends JFrame {
 		String PowerConsumption = "4";
 		
 		
+		//query = "INSERT INTO bn25_pr2 (Date, Time, PowerConsumption)\r\n" + 
+		//		"VALUES ('"+date+"', '"+Time+"', '"+PowerConsumption+"')";
+		String[] godzina = new String[dates.length];
+		String[] dzien = new String[dates.length];
+		String[] wartosc = new String[kWh_table.length];
+		
+		System.out.println("size1: " + dates.length + "size2 : "+ kWh_table.length);
+		
+		for(int i = 0; i< kWh_table.length;i++)
+		{
+			dzien[i] = dates[i].substring(0, 11);
+			godzina[i] = dates[i].substring(11, 19);
+			wartosc[i] = String.valueOf(kWh_table[i]);
+		}
+		System.out.println("dzien"+ dzien[3] + "godzina" + godzina[3] + "wartosc: "+ wartosc[3]);
+		
 		query = "INSERT INTO bn25_pr2 (Date, Time, PowerConsumption)\r\n" + 
-				"VALUES ('"+date+"', '"+Time+"', '"+PowerConsumption+"')";
+				"VALUES (?,?,?)";
 
 		PreparedStatement pst=connection.prepareStatement(query);
-		ResultSet rs=pst.executeQuery();
+		//ResultSet rs=pst.executeQuery();
 		
+		for(int i = 0 ; i < dates.length-1 ;i++)
+		{
+			pst.setString(1, dzien[i]);
+			pst.setString(2, godzina[i]);
+			pst.setString(3, wartosc[i]);
+			pst.addBatch();
+		}
+		pst.executeBatch();
 		pst.close();			
-		rs.close();
+		//rs.close();
 		
 		
     }

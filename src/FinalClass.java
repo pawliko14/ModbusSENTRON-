@@ -19,6 +19,7 @@ public class FinalClass {
 	private JButton stop2;
 	private JButton continue1;
 	private JButton continue2;
+	 static JButton LiveChart;
 
 	int counter = 0;
 	
@@ -318,5 +319,21 @@ public class FinalClass {
 		Count.setBounds(136, 98, 30, 20);
 		frame.getContentPane().add(Count);
 		Count.setColumns(10);
+		
+		 LiveChart = new JButton("Show final Charts");
+		LiveChart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				TabChart test = new TabChart();
+				test.tabchart();
+				
+				//if(LiveChart.getModel().isEnabled())
+				//	LiveChart.setEnabled(false);
+				
+				
+			}
+		});
+		LiveChart.setBounds(24, 217, 177, 23);
+		frame.getContentPane().add(LiveChart);
 	}
 }
