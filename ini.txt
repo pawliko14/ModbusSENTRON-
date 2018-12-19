@@ -1,0 +1,5 @@
+LICZBA_POMIAROW =9
+CZESTOTLIWOSC =500
+register =25
+Offset =2
+Directory ="C://Users/el08/Desktop/charts/"

@@ -54,14 +54,15 @@ czyli liczy liczy np 10, myk rozlaczylo i polaczylo, ma byc potem 11 12 pomiarow
 
 public class Program extends JFrame {
 
+		
 	static Connection connection=null;
-	static public int LICZBA_POMIAROW =30;    //  450, czyli 15h pracy z pomiarem co 2 minuty
-	static public int CZESTOTLIWOSC = 6000*1;// 60000 * 2 -> co 2 minuty pomiar
-	static private int register = 25;
-	static private int Offset = 2;   // 2 for 65 regiester, 4 for 801 register
+	static public int LICZBA_POMIAROW =Integer.parseInt(IniFile.LICZBA_POMIAROW);    //  450, czyli 15h pracy z pomiarem co 2 minuty
+	static public int CZESTOTLIWOSC = Integer.parseInt(IniFile.CZESTOTLIWOSC);// 60000 * 2 -> co 2 minuty pomiar
+	static private int register = Integer.parseInt(IniFile.register);
+	static private int Offset = Integer.parseInt(IniFile.Offset);   // 2 for 65 regiester, 4 for 801 register
 	static boolean Show = false;					// pokazuje na ekranie 200 pierwszych rejestrow
 	static String Connection_ip = "192.168.90.145";
-	static String Directory = "C://Users/el08/Desktop/charts/";
+	static String Directory = IniFile.Directory; //"C://Users/el08/Desktop/charts/";
 	
 	public static double CurrentValue = 0;
 	static private String start_time= "";
@@ -362,7 +363,7 @@ public class Program extends JFrame {
 			wartosc[i] = String.valueOf(kWh_table[i]);
 		}
 
-		query = "INSERT INTO bn25_pr2 (Date, Time, PowerConsumption) VALUES (?,?,?)";
+		query = "INSERT INTO bn25_pr2_1 (Date, Time, PowerConsumption) VALUES (?,?,?)";
 
 		PreparedStatement pst=connection.prepareStatement(query);
 		

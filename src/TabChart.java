@@ -23,7 +23,8 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 public class TabChart {
 
-	private double Random = new Random().nextDouble();
+	private double Random = new Random().nextDouble(); // just for testing random values
+	
 	
     private void display() {
         JFrame f = new JFrame("MachinesCharts");
@@ -31,8 +32,8 @@ public class TabChart {
         final JTabbedPane jtp = new JTabbedPane();
          
         jtp.add("BN25", createPane(Program.CurrentValue, "BN25"));  
-        jtp.add("BN01", createPane(Program.CurrentValue * Random* 2, "BN01"));
-        jtp.add("BN02", createPane(Program.CurrentValue * Random * 3, "BN02"));
+        jtp.add("BN01", createPane(Program.CurrentValue, "BN01"));
+        jtp.add("BN02", createPane(Program.CurrentValue , "BN02"));
         
 
         f.add(jtp, BorderLayout.CENTER);
@@ -73,7 +74,7 @@ public class TabChart {
         };
     }
 
-    public static void tabchart() {
+    public void tabchart() {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

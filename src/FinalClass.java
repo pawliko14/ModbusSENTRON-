@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.JToggleButton;
 
 public class FinalClass {
 
@@ -38,7 +40,9 @@ public class FinalClass {
 	 private JTextField quantity;
 	 private JTextField Counter;
 	 static JTextField Count;
-
+	 private JTextField txtBnPr;
+	 private JTextField txtBnPrtimer;
+	 
 	public static void general()
 	{
 			thread = new MainClass();
@@ -84,43 +88,30 @@ public class FinalClass {
 				});	   
 	   }
 	
-	public FinalClass() {
+	public FinalClass() throws IOException {
+		
+
+		IniFile.Ini(); // Czyta iniFile, ktory zawiera zmienne do pomiarow
+						// nie trzeba bedzie modyfikowac kodu, tylko sam ini.txt
+		
 		initialize();
-		
-	//	if(!thread.isAlive())
-		//	label1.setForeground(Color.RED);
-	//	
-		
+			
 	}
 
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 698, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JButton btnMainthread = new JButton("MainThread");
-		btnMainthread.setEnabled(false);
-		btnMainthread.setBounds(80, 149, 121, 23);
-		frame.getContentPane().add(btnMainthread);
-		
-		JButton btnTimethread = new JButton("TimeThread");
-		btnTimethread.setEnabled(false);
-		btnTimethread.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnTimethread.setBounds(80, 183, 121, 23);
-		frame.getContentPane().add(btnTimethread);
-		
 		label1 = new JLabel("•");
 		label1.setForeground(Color.RED);
-		label1.setBounds(24, 153, 46, 14);
+		label1.setBounds(207, 26, 15, 14);
 		frame.getContentPane().add(label1);
 		
 		JLabel label2 = new JLabel("•");
 		label2.setForeground(Color.RED);
-		label2.setBounds(24, 187, 46, 14);
+		label2.setBounds(400, 26, 20, 14);
 		frame.getContentPane().add(label2);
 		
 		JButton Start = new JButton("Start gathering");
@@ -180,7 +171,8 @@ public class FinalClass {
 		Start.setBounds(24, 11, 134, 45);
 		frame.getContentPane().add(Start);
 		
-		stop1 = new JButton("Stop 1st thread");
+		stop1 = new JButton("stop");
+		stop1.setVerticalAlignment(SwingConstants.BOTTOM);
 		stop1.setEnabled(false);
 		stop1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -198,10 +190,10 @@ public class FinalClass {
 
 			}
 		});
-		stop1.setBounds(181, 11, 107, 23);
+		stop1.setBounds(183, 70, 65, 23);
 		frame.getContentPane().add(stop1);
 		
-		stop2 = new JButton("Stop 2nd thread");
+		stop2 = new JButton("Stop");
 		stop2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -220,10 +212,10 @@ public class FinalClass {
 			}
 		});
 		stop2.setEnabled(false);
-		stop2.setBounds(298, 11, 126, 23);
+		stop2.setBounds(380, 71, 76, 23);
 		frame.getContentPane().add(stop2);
 		
-		 continue1 = new JButton("Continue thread");
+		 continue1 = new JButton("continue");
 		continue1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -238,12 +230,12 @@ public class FinalClass {
 			}
 		});
 		continue1.setEnabled(false);
-		continue1.setBounds(181, 71, 107, 23);
+		continue1.setBounds(258, 71, 76, 23);
 		frame.getContentPane().add(continue1);
 		
 		
 		
-		 continue2 = new JButton("Continue 2nd thread");
+		 continue2 = new JButton("Continue");
 		continue2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -257,20 +249,20 @@ public class FinalClass {
 		
 		
 		continue2.setEnabled(false);
-		continue2.setBounds(298, 71, 126, 23);
+		continue2.setBounds(459, 71, 96, 23);
 		frame.getContentPane().add(continue2);
 		
 		Value_1 = new JTextField();
 		Value_1.setEditable(false);
 				
-		Value_1.setBounds(181, 45, 107, 20);
+		Value_1.setBounds(183, 45, 151, 20);
 		frame.getContentPane().add(Value_1);
 		Value_1.setColumns(10);
 		
 		Value_2 = new JTextField();
 		Value_2.setEditable(false);
 		Value_2.setColumns(10);
-		Value_2.setBounds(298, 45, 126, 20);
+		Value_2.setBounds(380, 45, 175, 20);
 		frame.getContentPane().add(Value_2);
 		
 		txtFreq = new JTextField();
@@ -316,9 +308,10 @@ public class FinalClass {
 		Count.setText(Integer.toString(Program.z));
 
 		Count.setEditable(false);
-		Count.setBounds(136, 98, 30, 20);
+		Count.setBounds(146, 98, 30, 20);
 		frame.getContentPane().add(Count);
 		Count.setColumns(10);
+		
 		
 		 LiveChart = new JButton("Show final Charts");
 		LiveChart.addActionListener(new ActionListener() {
@@ -327,13 +320,29 @@ public class FinalClass {
 				TabChart test = new TabChart();
 				test.tabchart();
 				
-				//if(LiveChart.getModel().isEnabled())
-				//	LiveChart.setEnabled(false);
+				if(LiveChart.getModel().isEnabled()) 
+					LiveChart.setEnabled(false);	
 				
-				
+								
 			}
 		});
-		LiveChart.setBounds(24, 217, 177, 23);
+		LiveChart.setBounds(10, 228, 177, 23);
 		frame.getContentPane().add(LiveChart);
+		
+		txtBnPr = new JTextField();
+		txtBnPr.setHorizontalAlignment(SwingConstants.CENTER);
+		txtBnPr.setEditable(false);
+		txtBnPr.setText("BN25- Pr2");
+		txtBnPr.setBounds(248, 23, 86, 20);
+		frame.getContentPane().add(txtBnPr);
+		txtBnPr.setColumns(10);
+		
+		txtBnPrtimer = new JTextField();
+		txtBnPrtimer.setText("BN25- Pr2(timer)");
+		txtBnPrtimer.setHorizontalAlignment(SwingConstants.CENTER);
+		txtBnPrtimer.setEditable(false);
+		txtBnPrtimer.setColumns(10);
+		txtBnPrtimer.setBounds(444, 23, 111, 20);
+		frame.getContentPane().add(txtBnPrtimer);
 	}
 }
